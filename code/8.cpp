@@ -1,37 +1,39 @@
-#include<iostream>
-using namespace std;
-const int maxnumber=0x7fffffff;
-const int minnumber=0x80000000;
-int myAtoi(string str) {
-	int index=0;
-	while(index<str.length() && str[index]==' ') ++index;
-	bool flag=false;
-	string result;
-	if(index<str.length()){
-		if(str[index]=='-' || str[index]=='+'){
-			result+=str[index];
-		}else if(str[index]>='0' && str[index]<='9'){
-			result+=str[index];
-		}else 
-			return 0;
-	} 
-	++index;
-	for(;index<str.length();++index){
-		if(str[index]>='0' && str[index]<='9'){
-			result+=str[index];
-		}else{
-			break;
-		}
-	}
-	int size=result.size();
-	if(size==0) return 0;
-	else if(size==1 && result[0]=='-') return 0;
-	long long res=atoll(result.c_str());
-	if(res>maxnumber) return maxnumber;
-	else if(res<minnumber) return minnumber;
-	return res;
-}
-int main(){
-	std::cout<<"result:"<<myAtoi("4193 with words")<<std::endl;
-	return 0;
-}
+class Solution {
+public:
+    int myAtoi(string s) {
+        long long number=0;
+        int i=0;
+        //remove space
+        while(i<s.length()){
+            if(s[i]==' '){
+                i++;
+            }else{
+                break;
+            }
+        }
+        long long max_value=std::numeric_limits<int>::max();
+        long long min_value=std::numeric_limits<int>::min();
+        bool is_neg=false;
+        if(i<s.length()){
+            if(s[i]=='-'){
+                i++;
+                is_neg=true;
+            }else if(s[i]=='+'){
+                i++;
+            }
+            while(i<s.length() &&(s[i]>='0') && (s[i]<='9') && (number<max_value+1)){
+                number=number*10+(s[i]-'0');
+                i++;
+            }
+        }
+        if(is_neg){
+            number=-1*number;
+        }
+        if(number>max_value){
+            return max_value;
+        }else if(number<=min_value){
+            return min_value;
+        }
+        return number;
+    }
+};

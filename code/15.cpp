@@ -1,29 +1,30 @@
 class Solution {
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {
-        set<vector<int> > vec;
-        int size=nums.size();
-        vector<int> temp(3,0);
-        sort(nums.begin(),nums.end());
-        int left,last,sum=0;
-        for(int i=0;i<size-2;++i){
-            left=i+1;
-            last=size-1;
-            while(left<last){
-                sum=nums[left]+nums[last]+nums[i];
+        std::sort(nums.begin(),nums.end());
+        std::set<std::vector<int>> sums;
+        for(int i=0;i<nums.size();++i){
+            if(nums[i]>0){
+                break;
+            }
+            if((i-1>=0) && (nums[i]==nums[i-1])){
+                continue;
+            }
+            int j=i+1;
+            int k=nums.size()-1;
+            while( j<k && (nums[k]>=0)){
+                int sum=nums[i]+nums[j]+nums[k];
                 if(sum==0){
-                    temp[0]=nums[left];
-                    temp[1]=nums[last];
-                    temp[2]=nums[i];
-                    vec.insert(temp);
-                }
-                if(sum>0){
-                    --last;
+                    sums.insert({nums[i],nums[j],nums[k]});
+                    k--;
+                }else if(sum<0){
+                    j++;
                 }else{
-                    ++left;
+                    k--;
                 }
             }
         }
-        return vector<vector<int>>(vec.begin(),vec.end());
+        return std::vector<std::vector<int>>{sums.begin(),sums.end()};
     }
+
 };

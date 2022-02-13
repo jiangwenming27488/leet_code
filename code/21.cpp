@@ -3,39 +3,39 @@
  * struct ListNode {
  *     int val;
  *     ListNode *next;
- *     ListNode(int x) : val(x), next(NULL) {}
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
 class Solution {
 public:
-    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
-        ListNode* last1=NULL;
-        ListNode* node1=l1;
-        ListNode* last2=NULL;
-        ListNode* node2=l2;
-        while(node2!=NULL && node1!=NULL){
-            last2=node2->next;
-            if(node2->val<=node1->val){
-                if(last1==NULL){
-                    node2->next=node1;
-                    l1=node2;
-                    last1=node2;
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        ListNode* prev=nullptr;
+        ListNode* head=list1;
+        while(list1 && list2){
+            if(list1->val>list2->val){
+                ListNode* next=list2->next;
+                if(prev==nullptr){
+                    head=list2;
                 }else{
-                    last1->next=node2;
-                    node2->next=node1;
-                    last1=node2;
+                    prev->next=list2;
                 }
-                node2=last2;
+                list2->next=list1;
+                prev=list2;
+                list2=next;
             }else{
-                last1=node1;
-                node1=node1->next;
+                prev=list1;
+                list1=list1->next;
             }
         }
-        if(node2!=NULL){
-            if(last1!=NULL)
-                last1->next=node2;
-            else return l2;
+        if(list2){
+            if(prev==nullptr){
+                head=list2;
+            }else{
+                prev->next=list2;
+            }
         }
-        return l1;
+        return head;
     }
 };

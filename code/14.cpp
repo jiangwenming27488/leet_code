@@ -1,20 +1,21 @@
 class Solution {
 public:
     string longestCommonPrefix(vector<string>& strs) {
-        string result;
-        if(strs.size()==0) return result;
-        string str=strs[0];
-        for(int i=1;i<=str.size();++i){
-            int j=1;
-            for(;j<strs.size();++j){
-                if(strs[j].size()<i) break;
-                if(strs[j].substr(0,i)==str.substr(0,i)) continue;
-                else break;
+        std::string res;
+        for(int i=0;i<strs[0].length();++i){
+            bool flag=false;
+            for(auto const& str:strs){
+                if(str.length()<(i+1) || (str[i]!=strs[0][i])){
+                    flag=true;
+                    break;
+                }
             }
-            if(j==strs.size()){
-                result=str.substr(0,i);
+            if(flag){
+                break;
+            }else{
+                res.push_back(strs[0][i]);
             }
         }
-        return result;
+        return res;
     }
 };
