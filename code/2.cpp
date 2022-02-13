@@ -3,40 +3,38 @@
  * struct ListNode {
  *     int val;
  *     ListNode *next;
- *     ListNode(int x) : val(x), next(NULL) {}
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        ListNode* temp=(ListNode*)malloc(sizeof(ListNode));
-        temp->next=NULL;
-        temp->val=-1;
-        ListNode* result=temp;
-        int current=0;
-        while(l1!=NULL || l2!=NULL){
-            if(l1==NULL) current=l2->val+current;
-            else if(l2==NULL) current=l1->val+current;
-            else 
-                current=l1->val+l2->val+current;
-            if(temp->val==-1){
-                temp->val=current%10;
-            }else{
-                ListNode* node=(ListNode*)malloc(sizeof(ListNode));
-                node->next=NULL;
-                node->val=current%10;
-                temp->next=node;
-                temp=node;
+        ListNode* result=nullptr;
+        ListNode* next=nullptr;
+        int number=0;
+        while(l1!=nullptr || l2!=nullptr){
+            if(l1!=nullptr) {
+                number+=l1->val;
+                l1=l1->next;
             }
-            current/=10;
-            if(l1!=NULL) l1=l1->next;
-            if(l2!=NULL) l2=l2->next;
+            if(l2!=nullptr){
+                number+=l2->val;
+                l2=l2->next;
+            }
+            ListNode* tmp=new ListNode(number%10);
+            number/=10;
+            if(result==nullptr){
+                result=tmp;
+                next=tmp;
+            }else{
+                next->next=tmp;
+                next=next->next;
+            }
         }
-        if(current!=0){
-            ListNode* node=(ListNode*)malloc(sizeof(ListNode));
-            node->val=current;
-            node->next=NULL;
-            temp->next=node;
+        if(number>0){
+            next->next=new ListNode(number);
         }
         return result;
     }

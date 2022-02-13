@@ -1,20 +1,18 @@
- class Solution {
+class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        string res;
-        int len=s.size();
-        int pos=0;
-        int result=0;
-        for(int i=0;i<len;++i){
-            pos=res.find(s[i]);
-            if(pos==-1){
-                res+=s[i];
-            }else{
-                res=res.substr(pos+1,string::npos)+s[i];
+        int i=0;
+        int length=0;
+        for(int k=0;k<s.length();++k){
+            for(int t=i;t<k;++t){
+                if(s[t]==s[k]){
+                    length=std::max(length,k-i);
+                    i=t+1;
+                    break;
+                }
             }
-            result=max(result,static_cast<int>(res.size()));
         }
-        return result;
+        length=std::max(length,(int)(s.length())-i);
+        return length;
     }
 };
-
